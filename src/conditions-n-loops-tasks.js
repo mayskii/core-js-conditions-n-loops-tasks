@@ -385,9 +385,10 @@ function getSpiralMatrix(size) {
  */
 
 function rotateMatrix(matrix) {
-  const n = this.length;
+  const copyMatrix = matrix;
+  const n = copyMatrix.length;
 
-  if (n === 0) return matrix;
+  if (n === 0) return copyMatrix;
 
   for (let layer = 0; layer < n / 2; layer += 1) {
     const first = layer;
@@ -395,15 +396,15 @@ function rotateMatrix(matrix) {
 
     for (let i = first; i < last; i += 1) {
       const offset = i - first;
-      const top = this[first][i];
+      const top = copyMatrix[first][i];
 
-      this[first][i] = this[last - offset][first];
-      this[last - offset][first] = this[last][last - offset];
-      this[last][last - offset] = this[i][last];
-      this[i][last] = top;
+      copyMatrix[first][i] = copyMatrix[last - offset][first];
+      copyMatrix[last - offset][first] = copyMatrix[last][last - offset];
+      copyMatrix[last][last - offset] = copyMatrix[i][last];
+      copyMatrix[i][last] = top;
     }
   }
-  return matrix;
+  return copyMatrix;
 }
 
 /**
@@ -420,30 +421,22 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+
+function sortByAsc(arr) {
+  const copyArray = arr;
+  const n = copyArray.length;
+
+  for (let i = 0; i < n - 1; i += 1) {
+    for (let j = 0; j < n - 1 - i; j += 1) {
+      if (copyArray[j] > copyArray[j + 1]) {
+        const temp = copyArray[j];
+        copyArray[j] = copyArray[j + 1];
+        copyArray[j + 1] = temp;
+      }
+    }
+  }
+  return copyArray;
 }
-// function sortByAsc(arr) {
-//   const len = arr.length;
-//   if (len <= 1) return arr;
-
-//   const sortedArray = [...arr];
-
-//   for (let i = 0; i < len - 1; i += 1) {
-//     let minIndex = i;
-//     for (let j = i + 1; j < len; j += 1) {
-//       if (sortedArray[j] < sortedArray[minIndex]) {
-//         minIndex = j;
-//       }
-//     }
-//     if (minIndex !== i) {
-//       const temp = sortedArray[i];
-//       sortedArray[i] = sortedArray[minIndex];
-//       sortedArray[minIndex] = temp;
-//     }
-//   }
-//   return sortedArray;
-// }
 /**
  * Shuffles characters in a string so that the characters with an odd index are moved to the end of the string at each iteration.
  * Take into account that the string can be very long and the number of iterations is large. Consider how you can optimize your solution.
